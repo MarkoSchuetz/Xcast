@@ -24,8 +24,8 @@ $x                = 950
 $y                = 50
 $audio_input      = "pulse"
 $format           = "x11grab"
-$video_codec      = "mpeg4"
-$video_preset     = "lossless_ultrafast"
+$video_codec      = "libx264"
+$video_preset     = "ultrafast"
 $audio_codec      = "pcm_s16le"
 pick              = false
 delay_seconds     = 0
@@ -166,7 +166,7 @@ def video_options
 end
 
 def misc_options
-  %W[-sameq -threads #{$thread_count} -strict experimental]
+  %W[-qp 0 -threads #{$thread_count} -strict experimental]
 end
 
 def output_options
@@ -174,7 +174,7 @@ def output_options
 end
 
 def ffmpeg_flags
-  audio_options +
+#  audio_options +
   recording_options +
   video_options +
   misc_options +
@@ -222,8 +222,8 @@ if wait
 end
 
 delay_seconds.downto(1) do |seconds_left|
-  puts "Recording in #{seconds_left}..."
-  sleep 1
+  `echo "Recording in #{seconds_left}..." | osd_cat --align=center -d 1 --pos=middle -f "-xos4-terminus-bold-r-normal--32-320-72-72-c-160-iso8859-1"`
+#  sleep 1
 end
 
 puts "* ffmpeg #{ffmpeg_flags.join(' ')}"
